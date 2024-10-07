@@ -1,8 +1,8 @@
 package my.photo_manager.services;
 
 import my.photo_manager.config.PhotoConfiguration;
-import my.photo_manager.photo.Photo;
-import my.photo_manager.repository.PhotoRepository;
+import my.photo_manager.model.photo.Photo;
+import my.photo_manager.model.photo.repository.PhotoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
