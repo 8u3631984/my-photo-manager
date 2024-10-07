@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.model.photo.Photo;
-import my.photo_manager.model.photo.repository.PhotoRepository;
+import my.photo_manager.model.repository.PhotoRepository;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
