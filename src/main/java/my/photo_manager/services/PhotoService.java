@@ -1,4 +1,4 @@
-package my.photo_manager.service;
+package my.photo_manager.services;
 
 import lombok.NonNull;
 import lombok.SneakyThrows;

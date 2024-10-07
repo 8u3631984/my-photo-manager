@@ -4,7 +4,7 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import my.photo_manager.photo.Photo;
 import my.photo_manager.photo.PhotoDTO;
-import my.photo_manager.service.PhotoService;
+import my.photo_manager.services.PhotoService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

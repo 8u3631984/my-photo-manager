@@ -1,4 +1,4 @@
-package my.photo_manager.service;
+package my.photo_manager.services;
 
 import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.photo.Photo;
