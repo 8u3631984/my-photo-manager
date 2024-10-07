@@ -3,7 +3,7 @@ package my.photo_manager.service;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import my.photo_manager.configuration.PhotoConfiguration;
+import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.photo.Photo;
 import my.photo_manager.repository.PhotoRepository;
 import org.apache.commons.io.FileUtils;
