@@ -25,9 +25,6 @@ public class Photo implements IPhoto {
     @NonNull
     private String filePath;
 
-    private int width;
-    private int height;
-
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private PhotoMetaData metaData;
 }
