@@ -2,14 +2,16 @@ package my.photo_manager.model.photo;
 
 import jakarta.persistence.*;
 import lombok.*;
+import my.photo_manager.model.metadata.PhotoMetaData;
 
 @Builder(setterPrefix = "with")
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@NoArgsConstructor
+@EqualsAndHashCode
+@ToString(callSuper = true)
 @Entity
-@Table(name = "photo")
-@ToString
+@Table(name = "PHOTO")
+@Getter
 public class Photo implements IPhoto {
 
     @Id
@@ -25,4 +27,7 @@ public class Photo implements IPhoto {
 
     private int width;
     private int height;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private PhotoMetaData metaData;
 }
