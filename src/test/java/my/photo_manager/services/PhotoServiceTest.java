@@ -1,6 +1,5 @@
 package my.photo_manager.services;
 
-import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.repository.PhotoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +19,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class PhotoServiceTest {
 
-    @Mock
-    private PhotoConfiguration configuration;
 
     @Mock
     private PhotoRepository repository;
@@ -37,7 +34,14 @@ class PhotoServiceTest {
     }
 
     @Test
-    void canGetHashValueOfPhotoFileHashValue() throws IOException {
+    void shouldReturnAllPhotoObjects() {
+        photoService.getAll();
+
+        verify(repository).findAll();
+    }
+
+    @Test
+    void shouldReturnHashValueOfPhotoFile() throws IOException {
         var testPhotoFile = Paths.get("src", "test", "resources", "TestPhotos", "Photo1.jpg").toFile();
         var hashValue = photoService.getHashValue(testPhotoFile);
 
@@ -47,7 +51,7 @@ class PhotoServiceTest {
 
 
     @Test
-    void canBuildPhotoObject() {
+    void shouldBuildPhotoObject() {
         var testPhotoFile = Paths.get("src", "test", "resources", "TestPhotos", "Photo1.jpg").toFile();
         var photoObject = photoService.buildPhotoObject(testPhotoFile);
 
@@ -56,20 +60,27 @@ class PhotoServiceTest {
         assertThat(photoObject.getFilePath()).isNotEmpty();
         assertThat(photoObject.getHashValue()).isNotNull();
         assertThat(photoObject.getHashValue()).isNotEmpty();
-
     }
 
     @Test
-    void canSavePhotoObject() {
+    void shouldSavePhotoObject() {
         photoService.savePhotoObject(mock(Photo.class));
 
         verify(repository).saveAndFlush(any(Photo.class));
     }
 
     @Test
-    void canGetAllPhotoObjects() {
-        photoService.getAll();
+    void shouldNotSavePhotoObjectWhen() {
+        photoService.savePhotoObject(mock(Photo.class));
 
-        verify(repository).findAll();
+        verify(repository).saveAndFlush(any(Photo.class));
+    }
+
+    @Test
+    void shouldBuildAndSavePhotoObject() {
+        var testPhotoFile = Paths.get("src", "test", "resources", "TestPhotos", "Photo1.jpg").toFile();
+        photoService.buildAndSavePhotoObject(testPhotoFile);
+
+        verify(repository).saveAndFlush(any(Photo.class));
     }
 }
