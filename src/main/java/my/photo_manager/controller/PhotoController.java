@@ -4,7 +4,6 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.services.PhotoService;
-import my.photo_manager.web.PhotoDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
