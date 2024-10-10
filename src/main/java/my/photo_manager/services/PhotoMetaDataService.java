@@ -23,7 +23,7 @@ import static net.logstash.logback.argument.StructuredArguments.kv;
 @Log4j2
 public class PhotoMetaDataService {
 
-    protected PhotoMetaData buildPhotoMetaData(@NonNull File photoFile) {
+    public PhotoMetaData buildPhotoMetaData(@NonNull File photoFile) {
         var longitude = getLongitude(photoFile);
         var latitude = getLatitude(photoFile);
         var addressJson = getAddressJsonFromOpenStreetMap(longitude, latitude);
