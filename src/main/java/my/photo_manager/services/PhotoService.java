@@ -1,12 +1,14 @@
 package my.photo_manager.services;
 
-import lombok.AccessLevel;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.repository.PhotoRepository;
+import org.apache.commons.io.FileUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -17,13 +19,14 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static net.logstash.logback.argument.StructuredArguments.kv;
+import static net.logstash.logback.argument.StructuredArguments.v;
 
 @Service
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 @Log4j2
 public class PhotoService {
 
-
+    private final PhotoConfiguration configuration;
     private final PhotoRepository repository;
     private final PhotoMetaDataService metaDataService;
     private final PhotoFilterService filterService;
@@ -33,6 +36,21 @@ public class PhotoService {
      */
     public Collection<Photo> getAll() {
         return repository.findAll();
+    }
+
+    @Scheduled(fixedRate = 30000)
+    public void importPhotos() {
+        var sources = configuration.getSource();
+
+        if (configuration.getSource() != null) {
+            sources.forEach(sourceFolder -> {
+                var photoFiles = FileUtils.listFiles(new File(sourceFolder), new String[]{"jpg"}, true);
+                log.info("found {} photo files in {}", v("number of jpeg files", photoFiles.size()),
+                        kv("source folder", sourceFolder));
+
+                photoFiles.forEach(this::buildAndSavePhotoObject);
+            });
+        }
     }
 
     /**

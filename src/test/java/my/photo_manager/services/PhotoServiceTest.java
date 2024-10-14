@@ -1,6 +1,7 @@
 package my.photo_manager.services;
 
 import my.photo_manager.TestConstants;
+import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.repository.PhotoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,9 @@ import static org.mockito.Mockito.*;
 class PhotoServiceTest {
 
     @Mock
+    private PhotoConfiguration configuration;
+
+    @Mock
     private PhotoRepository repository;
 
     @Mock
@@ -38,7 +42,7 @@ class PhotoServiceTest {
 
     @BeforeEach
     void init() {
-        photoService = new PhotoService(repository, metaDataService, filterService);
+        photoService = new PhotoService(configuration, repository, metaDataService, filterService);
     }
 
     @Test
