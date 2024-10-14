@@ -1,4 +1,4 @@
-package my.photo_manager.controller;
+package my.photo_manager.web;
 
 import lombok.NonNull;
 
