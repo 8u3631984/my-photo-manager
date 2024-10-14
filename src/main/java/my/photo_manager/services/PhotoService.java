@@ -1,6 +1,8 @@
 package my.photo_manager.services;
 
+import lombok.AccessLevel;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import my.photo_manager.model.photo.Photo;
@@ -17,17 +19,14 @@ import java.util.Optional;
 import static net.logstash.logback.argument.StructuredArguments.kv;
 
 @Service
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Log4j2
 public class PhotoService {
 
 
     private final PhotoRepository repository;
     private final PhotoMetaDataService metaDataService;
-
-    protected PhotoService(@NonNull PhotoRepository repository, @NonNull PhotoMetaDataService metaDataService) {
-        this.repository = repository;
-        this.metaDataService = metaDataService;
-    }
+    private final PhotoFilterService filterService;
 
     /**
      * @return a list of all photo objects
@@ -69,6 +68,7 @@ public class PhotoService {
         if (optionalPhoto.isEmpty()) {
             savedPhoto = repository.saveAndFlush(photoObject);
             log.info("save {}", kv("photoObject", savedPhoto));
+            filterService.updateFilterList(savedPhoto);
         } else {
             savedPhoto = optionalPhoto.get();
             log.info("{} exists already", kv("photoObject", savedPhoto));

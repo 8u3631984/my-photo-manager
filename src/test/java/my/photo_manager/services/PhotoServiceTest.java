@@ -31,11 +31,14 @@ class PhotoServiceTest {
     @Mock
     private PhotoMetaDataService metaDataService;
 
+    @Mock
+    private PhotoFilterService filterService;
+
     private PhotoService photoService;
 
     @BeforeEach
     void init() {
-        photoService = new PhotoService(repository, metaDataService);
+        photoService = new PhotoService(repository, metaDataService, filterService);
     }
 
     @Test
