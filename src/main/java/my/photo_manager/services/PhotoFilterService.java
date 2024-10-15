@@ -26,27 +26,70 @@ public class PhotoFilterService {
 
     private final PhotoRepository repository;
     private final List<IFilter> filterList = Lists.newArrayList();
+    private final List<IFilter> activeFilter = Lists.newArrayList();
 
     public List<Photo> filter() {
-        return repository.findAll()
-                .stream()
-                .filter(photo -> photo.getMetaData().containsSearchString("New York"))
-                .collect(Collectors.toList());
+        if (activeFilter.isEmpty()) {
+            return repository.findAll();
+        } else {
+            List<Photo> photos = Lists.newArrayList();
+            var savedPhotos = repository.findAll();
+
+            activeFilter.stream()
+                    .forEach(activeFilter -> {
+                        log.info("filter by {}", kv("activeFilter", activeFilter));
+
+                        if (activeFilter instanceof PhotoDimensionFilter) {
+                            var filter = (PhotoDimensionFilter) activeFilter;
+                            photos.addAll(savedPhotos.stream()
+                                    .filter(photo -> photo.getMetaData().getWidth() == filter.getWidth()
+                                            && photo.getMetaData().getHeight() == filter.getHeight())
+                                    .collect(Collectors.toList()));
+                        }
+
+                        if (activeFilter instanceof PhotoLocationFilter) {
+                            var filter = (PhotoLocationFilter) activeFilter;
+                            photos.addAll(savedPhotos.stream()
+                                    .filter(photo -> photo.getMetaData().getCountry().equals(filter.getCountry())
+                                            && photo.getMetaData().getCity().equals(filter.getCity())
+                                            && photo.getMetaData().getPostCode().equals(filter.getPostalCode())
+                                            && photo.getMetaData().getStreet().equals(filter.getStreet())
+                                            && photo.getMetaData().getHouseNumber().equals(filter.getHouseNumber()))
+                                    .collect(Collectors.toList()));
+                        }
+                    });
+            return photos;
+        }
+
     }
 
     public List<IFilter> getFilterList() {
         return filterList;
     }
 
-    public void updateFilterList(@NonNull Photo photo) {
+    public void createFilterObject(@NonNull Photo photo) {
 
-        Predicate<IFilter> existsFilter = (newFilter) -> filterList.stream().anyMatch(filter -> filter.getText().equals(newFilter.getText()));
+        Predicate<IFilter> isFilterTextEmpty = (newFilter) -> newFilter.getText().isEmpty();
+
+        Predicate<IFilter> existsFilter = (newFilter) -> filterList.stream()
+                .anyMatch(filter -> filter.getText().equals(newFilter.getText()));
+
         Lists.newArrayList(new PhotoDimensionFilter(photo), new PhotoLocationFilter(photo));
 
         Stream.of(new PhotoDimensionFilter(photo),
-                new PhotoLocationFilter(photo)).filter(filter -> existsFilter.negate().test(filter)).forEach(filter -> {
+                new PhotoLocationFilter(photo)).filter(filter -> isFilterTextEmpty.negate().test(filter) && existsFilter.negate().test(filter)).forEach(filter -> {
             filterList.add(filter);
-            log.info("add {} to filterlist", kv("filter", filter));
+            log.info("create {} to filterlist", kv("filter", filter));
         });
+    }
+
+    public void activateFilter(@NonNull IFilter filter) {
+        this.activeFilter.add(filter);
+        log.info("add {} to activeFilterList", kv("filter", filter));
+    }
+
+    public void deactivateFilter(@NonNull IFilter filter) {
+        this.activeFilter.remove(filter);
+        log.info("remove {} to activeFilterList", kv("filter", filter));
     }
 }

@@ -38,6 +38,9 @@ public class PhotoService {
         return repository.findAll();
     }
 
+    /**
+     * import the photos from the source directory
+     */
     @Scheduled(fixedRate = 30000)
     public void importPhotos() {
         var sources = configuration.getSource();
@@ -86,7 +89,7 @@ public class PhotoService {
         if (optionalPhoto.isEmpty()) {
             savedPhoto = repository.saveAndFlush(photoObject);
             log.info("save {}", kv("photoObject", savedPhoto));
-            filterService.updateFilterList(savedPhoto);
+            filterService.createFilterObject(savedPhoto);
         } else {
             savedPhoto = optionalPhoto.get();
             log.info("{} exists already", kv("photoObject", savedPhoto));
