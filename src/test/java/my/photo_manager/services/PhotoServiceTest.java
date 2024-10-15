@@ -1,6 +1,5 @@
 package my.photo_manager.services;
 
-import my.photo_manager.TestConstants;
 import my.photo_manager.config.PhotoConfiguration;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.repository.PhotoRepository;
@@ -18,6 +17,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static my.photo_manager.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -54,9 +54,9 @@ class PhotoServiceTest {
 
     static Stream<Arguments> getTestDataForGetHashValue() {
         return Stream.of(
-                Arguments.of(TestConstants.testPhotoWithExifDataPath),
-                Arguments.of(TestConstants.testPhotoWithoutExifDataPath),
-                Arguments.of(TestConstants.testImagePath)
+                Arguments.of(TEST_PHOTO_PATH_WITH_EXIF_DATA),
+                Arguments.of(TEST_PHOTO_PATH_WITHOUT_EXIF_DATA),
+                Arguments.of(TEST_IMAGE_PATH)
         );
     }
 
@@ -71,9 +71,9 @@ class PhotoServiceTest {
 
     static Stream<Arguments> getTestDataForBuildPhotoObject() {
         return Stream.of(
-                Arguments.of(TestConstants.testPhotoWithExifDataPath),
-                Arguments.of(TestConstants.testPhotoWithoutExifDataPath),
-                Arguments.of(TestConstants.testImagePath)
+                Arguments.of(TEST_PHOTO_PATH_WITH_EXIF_DATA),
+                Arguments.of(TEST_PHOTO_PATH_WITHOUT_EXIF_DATA),
+                Arguments.of(TEST_IMAGE_PATH)
         );
     }
 
@@ -99,10 +99,10 @@ class PhotoServiceTest {
 
     @Test
     void shouldNotSavePhotoObjectWhenExistsAlready() {
-        var photo = Photo.builder().withFilePath("").withHashValue("1234").build();
-        given(repository.findByHashValue("1234"))
+        given(repository.findByHashValue(TEST_HASH_VALUE))
                 .willReturn(Optional.of((mock(Photo.class))));
 
+        var photo = Photo.builder().withFilePath(TEST_FILE_PATH).withHashValue(TEST_HASH_VALUE).build();
         photoService.savePhotoObject(photo);
 
         verify(repository, never()).saveAndFlush(any(Photo.class));
@@ -110,9 +110,9 @@ class PhotoServiceTest {
 
     static Stream<Arguments> getTestDataForBuildAndSavePhotoObject() {
         return Stream.of(
-                Arguments.of(TestConstants.testPhotoWithExifDataPath),
-                Arguments.of(TestConstants.testPhotoWithoutExifDataPath),
-                Arguments.of(TestConstants.testImagePath)
+                Arguments.of(TEST_PHOTO_PATH_WITH_EXIF_DATA),
+                Arguments.of(TEST_PHOTO_PATH_WITHOUT_EXIF_DATA),
+                Arguments.of(TEST_IMAGE_PATH)
         );
     }
 
