@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static net.logstash.logback.argument.StructuredArguments.kv;
@@ -35,7 +34,7 @@ public class PhotoFilterService {
             List<Photo> photos = Lists.newArrayList();
             var savedPhotos = repository.findAll();
 
-            activeFilter.stream()
+            activeFilter
                     .forEach(activeFilter -> {
                         log.info("filter by {}", kv("activeFilter", activeFilter));
 
@@ -44,7 +43,7 @@ public class PhotoFilterService {
                             photos.addAll(savedPhotos.stream()
                                     .filter(photo -> photo.getMetaData().getWidth() == filter.getWidth()
                                             && photo.getMetaData().getHeight() == filter.getHeight())
-                                    .collect(Collectors.toList()));
+                                    .toList());
                         }
 
                         if (activeFilter instanceof PhotoLocationFilter) {
@@ -55,7 +54,7 @@ public class PhotoFilterService {
                                             && photo.getMetaData().getPostCode().equals(filter.getPostalCode())
                                             && photo.getMetaData().getStreet().equals(filter.getStreet())
                                             && photo.getMetaData().getHouseNumber().equals(filter.getHouseNumber()))
-                                    .collect(Collectors.toList()));
+                                    .toList());
                         }
                     });
             return photos;

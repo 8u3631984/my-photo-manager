@@ -7,7 +7,6 @@ import lombok.SneakyThrows;
 import my.photo_manager.filter.IFilter;
 import my.photo_manager.model.photo.Photo;
 import my.photo_manager.services.PhotoFilterService;
-import my.photo_manager.services.PhotoService;
 import my.photo_manager.web.FilterDTO;
 import my.photo_manager.web.PhotoDTO;
 import org.springframework.stereotype.Controller;

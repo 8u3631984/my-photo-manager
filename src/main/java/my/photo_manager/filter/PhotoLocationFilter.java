@@ -38,7 +38,7 @@ public class PhotoLocationFilter implements IFilter {
         houseNumber = photoMetaData.getHouseNumber();
 
         text = country + " " + city + " " + postalCode + " " + street + " " + houseNumber;
-        text.trim();
+        text = text.trim();
     }
 
     @Override

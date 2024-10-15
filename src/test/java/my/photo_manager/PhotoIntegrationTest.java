@@ -54,7 +54,7 @@ class PhotoIntegrationTest {
                 .atMost(20, SECONDS)
                 .pollDelay(1, SECONDS)
                 .until(() -> photoService.getAll().size() > 0);
-        assertThat(filterService.getFilterList().size()).isEqualTo(3);;
+        assertThat(filterService.getFilterList().size()).isEqualTo(3);
 
         // filter 2 photos by dimension
         var photoDimensionFilter = new PhotoDimensionFilter(META_DATA_OF_PHOTO_WITH_EXIF_DATA);
