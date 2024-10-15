@@ -1,7 +1,6 @@
 package my.photo_manager;
 
 import my.photo_manager.model.metadata.PhotoMetaData;
-import my.photo_manager.model.photo.Photo;
 import org.apache.logging.log4j.util.Strings;
 
 import java.nio.file.Path;
@@ -48,22 +47,6 @@ public class TestUtils {
             .withStreet(Strings.EMPTY)
             .withHouseNumber(Strings.EMPTY)
             .build();
-
-    public static PhotoMetaData buildMetaData(int height, int width, String creationTimeStamp, String country, String city, String postalCode, String street, String houseNumber) {
-        return PhotoMetaData.builder().build();
-    }
-
-    public static PhotoMetaData buildEmptyMetaData() {
-        return PhotoMetaData.builder().build();
-    }
-
-    public static PhotoMetaData buildMetaDataWithNoLocation(int height, int width, String creationTimeStamp) {
-        return PhotoMetaData.builder()
-                .withHeight(height)
-                .withWidth(width)
-                .withCreationTimeStamp(creationTimeStamp)
-                .build();
-    }
 
     public static PhotoMetaData buildMetaDataWithGermanyLocation(int height, int width, String creationTimeStamp) {
         return PhotoMetaData.builder()
